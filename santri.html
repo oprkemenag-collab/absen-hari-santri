@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Hari Santri 2026 - Kemenag Pohuwato</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Nuansa Hijau Toska Khas Hari Santri & Emas */
+            background: linear-gradient(135deg, #064e3b 0%, #0f766e 50%, #134e4a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        .card {
+            border: none;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.3), 0 10px 15px -5px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background: #ffffff;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        .logo-img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 12px;
+            padding: 5px;
+            border-radius: 50%;
+            background: #f0fdf4;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+        }
+        .form-label {
+            font-size: 0.875rem;
+            color: #334155;
+            margin-bottom: 0.4rem;
+        }
+        .form-control, .form-select {
+            border-radius: 0.625rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+            font-size: 0.95rem;
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0d9488;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+        }
+        .camera-box {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+        }
+        #video, #canvas {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            background: #000;
+        }
+        .btn-santri {
+            background: linear-gradient(135deg, #0d9488 0%, #047857 100%);
+            border: none;
+            border-radius: 0.625rem;
+            padding: 0.85rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+        }
+        .btn-santri:hover {
+            background: linear-gradient(135deg, #0f766e 0%, #065f46 100%);
+            color: white;
+            transform: translateY(-1px);
+        }
+        .badge-date {
+            background-color: #f0fdf4;
+            color: #047857;
+            font-weight: 600;
+            border: 1px solid #bbf7d0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <img src="hari-santri.jpg" alt="Logo Hari Santri 2026" class="logo-img">
+                        <h4 class="mb-1 fw-bold" style="color: #047857;">ABSENSI HARI SANTRI 2026</h4>
+                        <p class="text-muted small mb-2">Kementerian Agama Kab. Pohuwato</p>
+                        <span class="badge badge-date px-3 py-1.5 rounded-pill">📅 22 Oktober 2026</span>
+                    </div>
+                    <div class="card-body p-4 p-md-5 bg-white">
+                        <form id="formAbsen">
+                            <!-- Baris Nama & NIP -->
+                            <div class="row">
+                                <div class="col-md-7 mb-3">
+                                    <label for="nama" class="form-label fw-semibold">Nama Lengkap & Gelar</label>
+                                    <input type="text" class="form-control" id="nama" placeholder="Contoh: Drs. H. Ahmad Fauzi, M.Pd." required>
+                                </div>
+                                <div class="col-md-5 mb-3">
+                                    <label for="nip" class="form-label fw-semibold">NIP / No. Identitas</label>
+                                    <input type="text" class="form-control" id="nip" placeholder="Masukkan NIP" required>
+                                </div>
+                            </div>
+
+                            <!-- Baris Satker & Unit Kerja -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="satker" class="form-label fw-semibold">Satuan Kerja (Satker)</label>
+                                    <select class="form-select" id="satker" required>
+                                        <option value="" selected disabled>-- Pilih Satker --</option>
+                                        <option value="Kantor Kementerian Agama">Kantor Kementerian Agama</option>
+                                        <option value="KUA Kecamatan">KUA Kecamatan</option>
+                                        <option value="MAN (Madrasah Aliyah Negeri)">MAN (Madrasah Aliyah Negeri)</option>
+                                        <option value="MTsN (Madrasah Tsanawiyah Negeri)">MTsN (Madrasah Tsanawiyah Negeri)</option>
+                                        <option value="MIN (Madrasah Ibtidaiyah Negeri)">MIN (Madrasah Ibtidaiyah Negeri)</option>
+                                        <option value="Madrasah Swasta / Pesantren">Madrasah Swasta / Pesantren</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="unit_kerja" class="form-label fw-semibold">Nama Kantor / Madrasah</label>
+                                    <input type="text" class="form-control" id="unit_kerja" placeholder="Contoh: KUA Kec. Gubeng" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="keterangan" class="form-label fw-semibold">Keterangan Kehadiran</label>
+                                <select class="form-select" id="keterangan" required>
+                                    <option value="Hadir">Hadir Apel / Upacara</option>
+                                    <option value="Tugas Kedinasan">Tugas Kedinasan</option>
+                                    <option value="Izin">Izin</option>
+                                    <option value="Sakit">Sakit</option>
+                                </select>
+                            </div>
+
+                            <!-- Kamera Selfie -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Verifikasi Foto Selfie <span class="text-danger">*</span></label>
+                                <div class="camera-box">
+                                    <video id="video" autoplay playsinline></video>
+                                    <canvas id="canvas" style="display:none;"></canvas>
+                                    <button type="button" class="btn btn-outline-success btn-sm mt-3 px-4 rounded-pill fw-semibold" id="btnSnap">📸 Ambil Foto Selfie</button>
+                                    <div id="statusFoto" class="form-text text-danger mt-1 small">Foto selfie wajib diambil sebagai bukti.</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Status GPS -->
+                            <div class="mb-4 p-3 bg-light border-0 rounded-3 d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="spinner-border spinner-border-sm text-success" role="status" id="loadingGps"></div>
+                                </div>
+                                <div>
+                                    <div class="small fw-bold text-dark">Status Lokasi GPS:</div>
+                                    <div id="statusLokasi" class="small text-muted">Memindai koordinat perangkat...</div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-santri w-100 py-3 shadow-sm" id="btnKirim" disabled>Kirim Daftar Hadir</button>
+                        </form>
+                        
+                        <div id="alertBox" class="mt-3"></div>
+                    </div>
+                </div>
+                <div class="text-center mt-4 text-white-50 small">
+                    &copy; 2026 Sistem Kehadiran Elektronik &bull; Kementerian Agama Republik Indonesia
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = "URL_WEB_APP_ANDA_DISINI"; // Ganti dengan URL Web App Anda
+
+        const form = document.getElementById('formAbsen');
+        const btnKirim = document.getElementById('btnKirim');
+        const alertBox = document.getElementById('alertBox');
+        const statusLokasi = document.getElementById('statusLokasi');
+        const loadingGps = document.getElementById('loadingGps');
+        
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const btnSnap = document.getElementById('btnSnap');
+        const statusFoto = document.getElementById('statusFoto');
+
+        let userLat = "Tidak diizinkan";
+        let userLon = "Tidak diizinkan";
+        let capturedImageData = null;
+
+        // Nyalakan Kamera Depan
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(err) {
+                statusFoto.innerHTML = "Akses kamera ditolak atau perangkat tidak mendukung.";
+            });
+
+        // Ambil / Ulang Foto
+        btnSnap.addEventListener('click', function() {
+            if (video.style.display === 'none') {
+                video.style.display = 'block';
+                canvas.style.display = 'none';
+                btnSnap.innerText = '📸 Ambil Foto Selfie';
+                btnSnap.className = 'btn btn-outline-success btn-sm mt-3 px-4 rounded-pill fw-semibold';
+                capturedImageData = null;
+                btnKirim.disabled = true;
+            } else {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                let context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                capturedImageData = canvas.toDataURL('image/jpeg');
+                
+                canvas.style.display = 'block';
+                video.style.display = 'none';
+                btnSnap.innerText = '🔄 Ambil Ulang Foto';
+                btnSnap.className = 'btn btn-outline-secondary btn-sm mt-3 px-4 rounded-pill fw-semibold';
+                statusFoto.innerHTML = '<span class="text-success fw-semibold">✔ Foto selfie berhasil disimpan.</span>';
+                
+                checkReadyState();
+            }
+        });
+
+        // Ambil Lokasi GPS
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    userLat = position.coords.latitude;
+                    userLon = position.coords.longitude;
+                    loadingGps.style.display = 'none';
+                    statusLokasi.innerHTML = '<span class="text-success fw-semibold">Berhasil terverifikasi akurat.</span>';
+                    checkReadyState();
+                },
+                function(error) {
+                    loadingGps.style.display = 'none';
+                    statusLokasi.innerHTML = '<span class="text-danger fw-semibold">Akses GPS ditolak.</span>';
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        } else {
+            loadingGps.style.display = 'none';
+            statusLokasi.innerHTML = '<span class="text-danger">Geolokasi tidak didukung browser ini.</span>';
+        }
+
+        function checkReadyState() {
+            if (capturedImageData) {
+                btnKirim.disabled = false;
+            }
+        }
+
+        // Kirim Data
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!capturedImageData) {
+                alert("Harap ambil foto selfie terlebih dahulu!");
+                return;
+            }
+
+            btnKirim.disabled = true;
+            btnKirim.innerText = 'Mengirim data & foto...';
+
+            const data = {
+                nama: document.getElementById('nama').value + " (NIP: " + document.getElementById('nip').value + ")",
+                kelas: document.getElementById('satker').value + " - " + document.getElementById('unit_kerja').value,
+                keterangan: document.getElementById('keterangan').value,
+                latitude: userLat,
+                longitude: userLon,
+                foto: capturedImageData
+            };
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                alertBox.innerHTML = '<div class="alert alert-success shadow-sm border-0">Kehadiran & Foto Selfie berhasil dikirim! Terima kasih atas pengabdian Anda.</div>';
+                form.reset();
+                setTimeout(() => location.reload(), 2000);
+            })
+            .catch(error => {
+                alertBox.innerHTML = '<div class="alert alert-danger shadow-sm border-0">Terjadi kesalahan koneksi. Silakan coba lagi.</div>';
+                btnKirim.disabled = false;
+                btnKirim.innerText = 'Kirim Daftar Hadir';
+            });
+        });
+    </script>
+</body>
+</html>
